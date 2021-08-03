@@ -1,11 +1,17 @@
 <idea-plugin>
     <id>com.github.charlesowen.cse335intellijplugin</id>
-    <name>cse335-intellij-plugin</name>
-    <vendor>charles-owen</vendor>
+    <name>CSE335 CLion Course Extensions</name>
+    <vendor>Charles B. Owen</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+
+    <description>
+        <![CDATA[
+        CSE 335 Course Plugin Options menu. Provides course-specific extensions to CLion.
+    ]]>
+    </description>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="com.github.charlesowen.cse335intellijplugin.services.MyApplicationService"/>
@@ -16,4 +22,31 @@
         <listener class="com.github.charlesowen.cse335intellijplugin.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
+
+    <actions>
+        <!--
+          All of the following menu groups add the action PopupDialogAction to menus in different ways.
+          Note that even though these groups reuse the same action class, in each use the action ids are unique.
+
+          GroupedActions demonstrates declaring an action group using the default ActionGroup implementation provided by the
+          IntelliJ Platform framework. (Note the lack of a group "class" attribute.) GroupedActions gets inserted after
+          PopupDialogAction in the Tools menu. Because the group's implementation is default, it cannot impose
+          enable/disable conditions. Instead it must rely on the conditions imposed by the parent menu where it is inserted.
+          It declares one action in the group.
+        -->
+        <group id="com.github.charlesowen.cse335intellijplugin.GroupedActions"
+               text="CSE335" description="CSE 335 course plugin options"
+               popup="true" >
+            <add-to-group group-id="MainMenu" anchor="last"/>
+            <action id="com.github.charlesowen.cse335intellijplugin.Option1"
+                    class="com.github.charlesowen.cse335intellijplugin.PopupDialogAction"
+                    text="Option 1" description="SDK static grouped action example">
+            </action>
+            <action id="com.github.charlesowen.cse335intellijplugin.Option2"
+                    class="com.github.charlesowen.cse335intellijplugin.PopupDialogAction"
+                    text="Option 2" description="SDK static grouped action example">
+            </action>
+        </group>
+
+    </actions>
 </idea-plugin>
