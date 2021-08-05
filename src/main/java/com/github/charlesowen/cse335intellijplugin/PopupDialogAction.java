@@ -65,7 +65,6 @@ public class PopupDialogAction extends AnAction {
 
     /**
      * Determines whether this menu item is available for the current context.
-     * Requires a project to be open.
      *
      * @param e Event received when the associated group-id menu is chosen.
      */
