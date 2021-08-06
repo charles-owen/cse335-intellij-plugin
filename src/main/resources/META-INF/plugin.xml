@@ -1,11 +1,21 @@
 <idea-plugin>
-    <id>com.github.charlesowen.cse335intellijplugin</id>
+    <id>edu.msu.cbowen.cse335intellijplugin</id>
     <name>CSE335 CLion Course Extensions</name>
     <vendor>Charles B. Owen</vendor>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="edu.msu.cbowen.cse335intellijplugin.AppSettingsState"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <applicationConfigurable parentId="tools" instance="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
+                                 id="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
+                                 displayName="CSE335 Plugin Settings"/>
+    </extensions>
 
     <actions>
         <!--
@@ -20,15 +30,15 @@
         -->
         <group id="MainMenu.CSE335"
                text="CSE335" description="CSE 335 course plugin options" popup="true">
-            <add-to-group group-id="ToolsMenu" anchor="first"/>
+            <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
             <action id="MainMenu.CSE335.Option1"
-                    class="com.github.charlesowen.cse335intellijplugin.PopupDialogAction"
+                    class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
                     text="Option 1" description="First example menu option.">
             </action>
         </group>
 
         <action id="MainMenu.CSE335.Option2"
-                class="com.github.charlesowen.cse335intellijplugin.PopupDialogAction"
+                class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
                 text="Option 2" description="Second example menu option.">
             <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
         </action>
