@@ -71,6 +71,8 @@ public class ExportToZipAction extends AnAction {
         //
         // User warning
         //
+        // Prior to exporting or submitting, be sure to save and make sure your solution builds okay.
+        //
 
 
 
