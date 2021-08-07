@@ -28,9 +28,6 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     /// The remote server
     public String server = "https://facweb.cse.msu.edu/cbowen/cse335";
 
-    /// Storage for the password if saved, null if not saved
-    public String password = null;
-
     public static AppSettingsState getInstance() {
         return ApplicationManager.getApplication().getService(AppSettingsState.class);
     }

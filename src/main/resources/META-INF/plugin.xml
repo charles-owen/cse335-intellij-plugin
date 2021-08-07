@@ -43,5 +43,18 @@
             <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
         </action>
 
+        <group id="MainMenu.CSE335.Export"
+               text="Export" description="Export project to file or remote server" popup="true">
+            <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
+            <action id="MainMenu.CSE335.Export.Submit"
+                    class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
+                    text="Submit Solution..." description="Submit current project to server as a solution.">
+            </action>
+            <action id="MainMenu.CSE335.Export.ToZip"
+                    class="edu.msu.cbowen.cse335intellijplugin.ExportToZipAction"
+                    text="Export Solution to ZIP" description="Export current project to a .ZIP file">
+            </action>
+        </group>
+
     </actions>
 </idea-plugin>
