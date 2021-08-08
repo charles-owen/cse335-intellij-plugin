@@ -3,43 +3,21 @@ package edu.msu.cbowen.cse335intellijplugin;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.components.impl.stores.IProjectStore;
+import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.pom.Navigatable;
+import com.intellij.openapi.roots.ProjectRootManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.vfs.VirtualFileWrapper;
 import org.jetbrains.annotations.NotNull;
-import com.intellij.openapi.components.ServiceKt;
 
-import java.nio.file.Path;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
 
 /**
  * Action class for CSE335>Export>Export to ZIP menu option
  */
 public class ExportToZipAction extends AnAction {
-
-    /**
-     * This default constructor is used by the IntelliJ Platform framework to instantiate this class based on plugin.xml
-     * declarations. Only needed in {@link ExportToZipAction} class because a second constructor is overridden.
-     *
-     * @see AnAction#AnAction()
-     */
-    public ExportToZipAction() {
-        super();
-    }
-
-//    /**
-//     * This constructor is used to support dynamically added menu actions.
-//     * It sets the text, description to be displayed for the menu item.
-//     * Otherwise, the default AnAction constructor is used by the IntelliJ Platform.
-//     *
-//     * @param text        The text to be displayed as a menu item.
-//     * @param description The description of the menu item.
-//     * @param icon        The icon to be used with the menu item.
-//     */
-//    public ExportToZipAction(@Nullable String text, @Nullable String description, @Nullable Icon icon) {
-//        super(text, description, icon);
-//    }
 
     /**
      * Handle the performed action
@@ -56,15 +34,24 @@ public class ExportToZipAction extends AnAction {
             return;
         }
 
-        IProjectStore projectStore = (IProjectStore)ServiceKt.getStateStore(currentProject);
-        Path existingBaseDir = projectStore.getProjectBasePath();
+        VirtualFile[] vFiles =
+                ProjectRootManager.getInstance(currentProject).getContentRoots();
+        if(vFiles.length < 1) {
+            return;
+        }
+
+        String projectBaseDir = vFiles[0].getPath();
 
         //
         // Get the user Id for the output file
         //
         AppSettingsState settings = AppSettingsState.getInstance();
+        if(settings == null) {
+            return;
+        }
+
         String userId = settings.userId;
-        if(userId.isBlank()) {
+        if(userId.equals("")) {
             userId = "student";
         }
 
@@ -73,17 +60,44 @@ public class ExportToZipAction extends AnAction {
         //
         // Prior to exporting or submitting, be sure to save and make sure your solution builds okay.
         //
-
-
-
-        StringBuilder dlgMsg = new StringBuilder(event.getPresentation().getText() + " Selected!");
-        String dlgTitle = event.getPresentation().getDescription();
-        // If an element is selected in the editor, add info about it.
-        Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
-        if (nav != null) {
-            dlgMsg.append(String.format("\nSelected Element: %s", nav));
+        ExportWarningDlg dlg = new ExportWarningDlg();
+        dlg.show();
+        if(!dlg.isOK()) {
+            return;
         }
-        Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
+
+
+        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFileDescriptor(".zip");
+        fcd.setTitle("Output Zip File");
+        fcd.setDescription("Select output Zip file to save project to.");
+
+
+        FileSaverDescriptor fsd = new FileSaverDescriptor("Save .zip file",
+                "Select output Zip file to save project to.", ".zip");
+
+
+        FileSaverDialog fileSaverDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, currentProject);
+        VirtualFileWrapper result = fileSaverDialog.save(userId);
+        if(result == null) {
+            return;
+        }
+
+        try (OutputStream stream = Files.newOutputStream(result.getFile().toPath())) {
+            DirectoryToZip d2z = new DirectoryToZip();
+            d2z.excludeStandard();
+            d2z.zip(projectBaseDir, stream);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+//        StringBuilder dlgMsg = new StringBuilder(event.getPresentation().getText() + " Selected!");
+//        String dlgTitle = event.getPresentation().getDescription();
+//        // If an element is selected in the editor, add info about it.
+//        Navigatable nav = event.getData(CommonDataKeys.NAVIGATABLE);
+//        if (nav != null) {
+//            dlgMsg.append(String.format("\nSelected Element: %s", nav));
+//        }
+//        Messages.showMessageDialog(currentProject, dlgMsg.toString(), dlgTitle, Messages.getInformationIcon());
     }
 
     /**

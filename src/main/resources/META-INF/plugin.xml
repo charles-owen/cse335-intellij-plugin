@@ -9,9 +9,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="edu.msu.cbowen.cse335intellijplugin.AppSettingsState"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
+        <applicationService serviceImplementation="edu.msu.cbowen.cse335intellijplugin.Connection"/>
+
         <applicationConfigurable parentId="tools" instance="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  id="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  displayName="CSE335 Plugin Settings"/>
@@ -19,29 +19,16 @@
 
     <actions>
         <!--
-          All of the following menu groups add the action PopupDialogAction to menus in different ways.
-          Note that even though these groups reuse the same action class, in each use the action ids are unique.
-
-          GroupedActions demonstrates declaring an action group using the default ActionGroup implementation provided by the
-          IntelliJ Platform framework. (Note the lack of a group "class" attribute.) GroupedActions gets inserted after
-          PopupDialogAction in the Tools menu. Because the group's implementation is default, it cannot impose
-          enable/disable conditions. Instead it must rely on the conditions imposed by the parent menu where it is inserted.
-          It declares one action in the group.
+            The CSE335 menu and its actions (menu options)
         -->
         <group id="MainMenu.CSE335"
                text="CSE335" description="CSE 335 course plugin options" popup="true">
             <add-to-group group-id="MainMenu" anchor="before" relative-to-action="HelpMenu"/>
-            <action id="MainMenu.CSE335.Option1"
-                    class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
-                    text="Option 1" description="First example menu option.">
+            <action id="MainMenu.CSE335.LogIn"
+                    class="edu.msu.cbowen.cse335intellijplugin.LoginAction"
+                    text="Log In..." description="Log into the CSE335 website.">
             </action>
         </group>
-
-        <action id="MainMenu.CSE335.Option2"
-                class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
-                text="Option 2" description="Second example menu option.">
-            <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
-        </action>
 
         <group id="MainMenu.CSE335.Export"
                text="Export" description="Export project to file or remote server" popup="true">
@@ -55,6 +42,12 @@
                     text="Export Solution to ZIP" description="Export current project to a .ZIP file">
             </action>
         </group>
+
+        <action id="MainMenu.CSE335.Logout"
+                class="edu.msu.cbowen.cse335intellijplugin.LogoutAction"
+                text="Log Out" description="Log off of the CSE335 website.">
+                <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
+        </action>
 
     </actions>
 </idea-plugin>
