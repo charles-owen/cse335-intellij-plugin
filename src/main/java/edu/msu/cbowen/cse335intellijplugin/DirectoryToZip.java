@@ -66,26 +66,28 @@ public class DirectoryToZip {
      */
     public void zip(String sourceDirPath, OutputStream stream) throws IOException {
 
-        try (ZipOutputStream zs = new ZipOutputStream(stream)) {
-            Path pp = Paths.get(sourceDirPath);
-            Files.walk(pp)
-                    .filter(path -> !Files.isDirectory(path))
-                    .forEach(path -> {
-                        if(!toExclude(path.toString())) {
+        ZipOutputStream zs = new ZipOutputStream(stream);
+        Path pp = Paths.get(sourceDirPath);
+        Files.walk(pp)
+                .filter(path -> !Files.isDirectory(path))
+                .forEach(path -> {
+                    if(!toExclude(path.toString())) {
 
-                            System.out.println(path);
+                        System.out.println(path);
 
-                            ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
-                            try {
-                                zs.putNextEntry(zipEntry);
-                                zs.write(Files.readAllBytes(path));
-                                zs.closeEntry();
-                            } catch (IOException e) {
-                                //System.err.println(e);
-                            }
+                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+                        try {
+                            zs.putNextEntry(zipEntry);
+                            zs.write(Files.readAllBytes(path));
+                            zs.closeEntry();
+                        } catch (IOException e) {
+                            System.err.println(e.getLocalizedMessage());
                         }
+                    }
 
-                    });
-        }
+                });
+
+        zs.flush();
+        zs.finish();
     }
 }

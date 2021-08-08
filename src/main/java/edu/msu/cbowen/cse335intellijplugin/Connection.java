@@ -46,7 +46,8 @@ public class Connection {
     //
     private static final String LOGIN_PATH = "/cl/api/users/login";
     private static final String SECTION_SELECT_PATH = "/cl/api/course/members/sectionselect";
-    private static final String SUBMIT_PATH = "/cl/api/course/submission/submit/";
+    public static final String SUBMIT_PATH = "/cl/api/course/submission/submit/";
+    public static final String TEAM_SUBMIT_PATH = "/cl/api/team/submission/submit/";
     private static final String POLL_PATH = "/cl/api/poll";
 
     /// Error messages
@@ -85,7 +86,7 @@ public class Connection {
 
     /**
      * Get the sections if we need to select among them.
-     * @return
+     * @return The sections
      */
     public APIValue getSections() {
         return sections;
@@ -96,14 +97,14 @@ public class Connection {
      * Get the server URL from settings.
      * @return Server URL.
      */
-    private String getServer() {
+    public String getServer() {
         AppSettingsState appSettingsState = AppSettingsState.getInstance();
         return appSettingsState.server;
     }
 
     /**
      * Get any error string that has been generated.
-     * @return
+     * @return Any error string
      */
     public String getError() {
         return error;
@@ -261,7 +262,10 @@ public class Connection {
         public String value;
     }
 
-
+    /**
+     * Thread the runs to keep the connection to the server alive.
+     * Polls the server once per second.
+     */
     private class KeepAwakeThread implements Runnable {
 
         private boolean running = true;
@@ -336,9 +340,16 @@ public class Connection {
         this.state = state;
         return this.state;
     }
-    
+
+    /**
+     * Connect to the server (POST)
+     * @param path Path no including the SERVER URL
+     * @param postData Post data to add to the POST message
+     * @return Server response
+     * @throws IOException On input/output errors
+     */
     public synchronized String connect(String path, List<PostData> postData) throws IOException {
-        String response = null;
+        String response;
                    
         String https_url = getServer() + path;
         URL url;
@@ -383,6 +394,7 @@ public class Connection {
         
         return response;
     }
+
     
     private void sendPost(HttpURLConnection conn, List<PostData> postData) throws UnsupportedEncodingException, IOException {
         /*

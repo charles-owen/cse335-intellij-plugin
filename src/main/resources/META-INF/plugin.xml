@@ -2,6 +2,7 @@
     <id>edu.msu.cbowen.cse335intellijplugin</id>
     <name>CSE335 CLion Course Extensions</name>
     <vendor>Charles B. Owen</vendor>
+    <version>0.0.0</version>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
@@ -15,6 +16,9 @@
         <applicationConfigurable parentId="tools" instance="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  id="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  displayName="CSE335 Plugin Settings"/>
+
+        <toolWindow id="Sanity" secondary="true" icon="AllIcons.General.Modified" anchor="bottom"
+                    factoryClass="edu.msu.cbowen.cse335intellijplugin.SanityWindowFactory"/>
     </extensions>
 
     <actions>
@@ -34,7 +38,7 @@
                text="Export" description="Export project to file or remote server" popup="true">
             <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
             <action id="MainMenu.CSE335.Export.Submit"
-                    class="edu.msu.cbowen.cse335intellijplugin.PopupDialogAction"
+                    class="edu.msu.cbowen.cse335intellijplugin.SubmitAction"
                     text="Submit Solution..." description="Submit current project to server as a solution.">
             </action>
             <action id="MainMenu.CSE335.Export.ToZip"
@@ -42,6 +46,13 @@
                     text="Export Solution to ZIP" description="Export current project to a .ZIP file">
             </action>
         </group>
+
+
+        <action id="MainMenu.CSE335.About"
+                class="edu.msu.cbowen.cse335intellijplugin.AboutAction"
+                text="About The Plugin..." description="About the CSE335 plugin.">
+            <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
+        </action>
 
         <action id="MainMenu.CSE335.Logout"
                 class="edu.msu.cbowen.cse335intellijplugin.LogoutAction"

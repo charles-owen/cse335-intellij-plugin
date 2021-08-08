@@ -11,6 +11,7 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.stream.Stream;
 
 /**
  * Found this code on the Internet...
@@ -108,6 +109,35 @@ public class MultipartUtility {
     }
 
     /**
+     * Adds a upload file section to the request
+     *
+     * @param fieldName  name attribute in <input type="file" name="..." />
+     * @param fileName name of the file to send
+     * @throws IOException
+     */
+    public void addFilePart(String fieldName, String fileName)
+            throws IOException {
+        writer.append("--" + boundary).append(LINE_FEED);
+        writer.append(
+                        "Content-Disposition: form-data; name=\"" + fieldName
+                                + "\"; filename=\"" + fileName + "\"")
+                .append(LINE_FEED);
+        writer.append(
+                        "Content-Type: "
+                                + URLConnection.guessContentTypeFromName(fileName))
+                .append(LINE_FEED);
+        writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
+        writer.append(LINE_FEED);
+        writer.flush();
+    }
+
+    public void addFilePartEnd() throws IOException {
+        outputStream.flush();
+        writer.append(LINE_FEED);
+        writer.flush();
+    }
+
+    /**
      * Adds a header field to the request.
      *
      * @param name  - name of the header field
@@ -148,5 +178,9 @@ public class MultipartUtility {
         }
 
         return response.toString();
+    }
+
+    public OutputStream getStream() {
+        return outputStream;
     }
 }
