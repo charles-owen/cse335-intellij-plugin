@@ -12,11 +12,15 @@ public class SanityWindow {
 
     private JPanel panel;
     private JTextPane textPane = null;
+    private ToolWindow toolWindow;
 
 
     public SanityWindow(ToolWindow toolWindow) {
-
+        this.toolWindow = toolWindow;
+        SanityCheck checker = SanityCheck.getInstance();
+        checker.setWindow(this);
     }
+
 
     public JPanel getContent() {
         panel = new JPanel();
@@ -36,11 +40,15 @@ public class SanityWindow {
 
         panel.add(scrollPane, cons);
 
-        for(int i=0; i<20; i++) {
-            add("\n" + i + " New line added...");
-        }
-
         return panel;
+    }
+
+    public void show() {
+        toolWindow.show();
+    }
+
+    public void clear() {
+        textPane.setText("");
     }
 
     public void add(String text) {

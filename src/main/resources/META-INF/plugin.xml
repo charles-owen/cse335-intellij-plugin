@@ -13,12 +13,16 @@
 
         <applicationService serviceImplementation="edu.msu.cbowen.cse335intellijplugin.Connection"/>
 
+        <applicationService serviceImplementation="edu.msu.cbowen.cse335intellijplugin.SanityCheck"/>
+
         <applicationConfigurable parentId="tools" instance="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  id="edu.msu.cbowen.cse335intellijplugin.AppSettingsConfigurable"
                                  displayName="CSE335 Plugin Settings"/>
 
         <toolWindow id="Sanity" secondary="true" icon="AllIcons.General.Modified" anchor="bottom"
                     factoryClass="edu.msu.cbowen.cse335intellijplugin.SanityWindowFactory"/>
+
+
     </extensions>
 
     <actions>
@@ -47,6 +51,11 @@
             </action>
         </group>
 
+        <action id="MainMenu.CSE335.Sanity"
+                class="edu.msu.cbowen.cse335intellijplugin.SanityAction"
+                text="Sanity Check" description="Basic project sanity check.">
+            <add-to-group group-id="MainMenu.CSE335" anchor="last"/>
+        </action>
 
         <action id="MainMenu.CSE335.About"
                 class="edu.msu.cbowen.cse335intellijplugin.AboutAction"
