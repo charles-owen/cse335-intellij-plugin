@@ -2,6 +2,10 @@
 
 # cse335-intellij-plugin Changelog
 
+## [Unreleased]
+
+- Changed configurations to Java 11
+- 
 ## [0.1.0] - 2021-08-09
 
 - Export of CLion files without the cmake- and .idea directories
