@@ -3,6 +3,8 @@
 # cse335-intellij-plugin Changelog
 
 ## [Unreleased]
+## [0.2.0]
+## [0.2.0]
 
 - Changed configurations to Java 11
 - 
