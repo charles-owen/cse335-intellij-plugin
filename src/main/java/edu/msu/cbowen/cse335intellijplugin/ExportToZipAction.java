@@ -33,15 +33,16 @@ public class ExportToZipAction extends ExportOrSubmitAction {
         //
         // File save dialog box
         //
-        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFileDescriptor(".zip");
-        fcd.setTitle("Output Zip File");
-        fcd.setDescription("Select output Zip file to save project to.");
+//        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFileDescriptor(".zip");
+//        fcd.setTitle("Output Zip File");
+//        fcd.setDescription("Select output Zip file to save project to.");
 
+        String[] extensions = new String[]{"zip"} ;
         FileSaverDescriptor fsd = new FileSaverDescriptor("Save .zip file",
-                "Select output Zip file to save project to.", ".zip");
+                "Select output Zip file to save project to.", extensions);
 
         FileSaverDialog fileSaverDialog = FileChooserFactory.getInstance().createSaveFileDialog(fsd, getProject());
-        VirtualFileWrapper result = fileSaverDialog.save(userId);
+        VirtualFileWrapper result = fileSaverDialog.save(userId + ".zip");
         if(result == null) {
             return;
         }
@@ -49,6 +50,7 @@ public class ExportToZipAction extends ExportOrSubmitAction {
         //
         // Save to a file
         //
+
         try (OutputStream stream = Files.newOutputStream(result.getFile().toPath())) {
             DirectoryToZip d2z = new DirectoryToZip();
             d2z.excludeStandard();

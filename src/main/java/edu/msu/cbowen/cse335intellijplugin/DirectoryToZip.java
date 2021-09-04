@@ -75,7 +75,11 @@ public class DirectoryToZip {
 
                         System.out.println(path);
 
-                        ZipEntry zipEntry = new ZipEntry(pp.relativize(path).toString());
+                        String relativePath = pp.relativize(path).toString();
+                        if(File.separatorChar != '/') {
+                            relativePath = relativePath.replace('\\', '/');
+                        }
+                        ZipEntry zipEntry = new ZipEntry(relativePath);
                         try {
                             zs.putNextEntry(zipEntry);
                             zs.write(Files.readAllBytes(path));

@@ -3,6 +3,16 @@
 # cse335-intellij-plugin Changelog
 
 ## [Unreleased]
+## [0.4.0]
+- Fixed problems with paths when exporting on a Windows system
+- Fixed issues with use of FileSaverDescriptor and zip files
+
+## [0.3.1]
+- Adding this changelog which I should have done the first time
+
+## [0.3.1]
+- Sanity check bug fixed that showed cycles where there were none
+- Fixed how the Sanity check window is brought up
 
 ## [0.2.0]
 - Sanity check added test for pch.h include

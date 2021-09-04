@@ -6,6 +6,7 @@ import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
 
@@ -64,6 +65,10 @@ public class SanityCheck {
     }
 
     public void check(Project project) {
+        var twm = ToolWindowManager.getInstance(project);
+        var tw = twm.getToolWindow("Sanity");
+        tw.activate(null);
+
         if(window == null) {
             return;
         }

@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SanityIncludeCycleCheckTest {
 
-
-
     @Test
     void check() {
         SanityIncludeCycleCheck checker = new SanityIncludeCycleCheck();
@@ -21,6 +19,21 @@ class SanityIncludeCycleCheckTest {
         checker.file(null, "/project/Aquarium/AquariumLib/FishBeta.h", toLines(fishBeta));
 
         var result = checker.check();
+        assertNull(result);
+
+        checker.start(null);
+        checker.file(null, "/Users/charlesowen/students/Goat.cpp", toLines(Goat_cpp));
+        checker.file(null, "/Users/charlesowen/students/Cow.cpp", toLines(Cow_cpp));
+        checker.file(null, "/Users/charlesowen/students/Animal.cpp", toLines(Animal_cpp));
+        checker.file(null, "/Users/charlesowen/students/Goat.h", toLines(Goat_h));
+        checker.file(null, "/Users/charlesowen/students/Farm.h", toLines(Farm_h));
+        checker.file(null, "/Users/charlesowen/students/Chicken.h", toLines(Chicken_h));
+        checker.file(null, "/Users/charlesowen/students/main.cpp", toLines(main_cpp));
+        checker.file(null, "/Users/charlesowen/students/Cow.h", toLines(Cow_h));
+        checker.file(null, "/Users/charlesowen/students/Chicken.cpp", toLines(Chicken_cpp));
+        checker.file(null, "/Users/charlesowen/students/Farm.cpp", toLines(Farm_cpp));
+
+        result = checker.check();
         assertNull(result);
 
         // Test that should find a cycle
@@ -153,5 +166,55 @@ class SanityIncludeCycleCheckTest {
             "#include \"b.h\"\n" +
             "#include \"Item.h\"\n";
 
+    //
+    // Test that should not show a cycle
+    //
+    private static final String Goat_cpp = "\n" +
+            "#include <iostream>\n" +
+            "#include \"Goat.h\"\n";
+
+    private static final String Goat_h = "\n" +
+            "#include <iostream>\n" +
+            "#include <string>\n" +
+            "#include \"Animal.h\"\n";
+
+    private static final String Cow_cpp = "\n" +
+            "#include <iostream>\n" +
+            "#include \"Cow.h\"\n";
+
+    private static final String Cow_h = "\n" +
+            "#include <iostream>\n" +
+            "#include <string>\n" +
+            "#include \"Animal.h\"\n";
+
+    private static final String Animal_cpp = "\n" +
+            "#include <iostream>\n" +
+            "#include \"Animal.h\"\n";
+
+    private static final String Farm_cpp = "\n" +
+            "#include \"Farm.h\"\n";
+
+    private static final String Farm_h = "\n" +
+            "#include \"Cow.h\"\n" +
+            "#include \"Chicken.h\"\n" +
+            "#include \"Goat.h\"\n" +
+            "#include \"Animal.h\"\n" +
+            "#include <vector>\n";
+
+    private static final String Chicken_cpp = "\n" +
+            "#include <iostream>\n" +
+            "#include \"Chicken.h\"\n";
+
+    private static final String Chicken_h = "\n" +
+            "#include <iostream>\n" +
+            "#include <string>\n" +
+            "#include \"Animal.h\"\n";
+
+    private static final String main_cpp = "\n" +
+            "#include <iostream>\n" +
+            "#include \"Farm.h\"\n" +
+            "#include \"Cow.h\"\n" +
+            "#include \"Checken.h\"\n" +
+            "#include \"Goat.h\"\n";
 
 }

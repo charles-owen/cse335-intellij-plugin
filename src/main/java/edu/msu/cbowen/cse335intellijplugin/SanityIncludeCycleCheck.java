@@ -60,10 +60,15 @@ public class SanityIncludeCycleCheck {
             Matcher matcher = includePattern.matcher(line);
             if (matcher.matches()) {
                 node.includes.add(matcher.group(1));
+                // System.out.println(path + " includes " + matcher.group(1));
             }
         }
     }
 
+    /**
+     * Check the graph for cycles.
+     * @return null if none or list of files for the first cycle found.
+     */
     public List<String> check() {
         // Clear the visited flags
         for(String fileToClear : nodes.keySet()) {
@@ -96,24 +101,33 @@ public class SanityIncludeCycleCheck {
         return null;
     }
 
+    /**
+     * Visit a node in the graph
+     * @param node Node we are visiting
+     * @param names Array of all nodes visited up to this point
+     * @param visit The visit flag value
+     * @return true if cycle found at this node
+     */
     private boolean visit(Node node, ArrayList<String> names, int visit) {
         // Add this node to the list of filenames
         names.add(node.filename);
 
         // See if this node has already been visited
         if(node.visit > 0) {
-            if(node.visit == visit) {
-                // If we visit a node we visited on this
-                // search, we have a cycle.
-                return true;
-            } else {
-                // If we hit a node that has been previously
-                // visited, but is not part of a cycle,
-                // there there is no cycle along this path
-                names.remove(names.size()-1);
-                return false;
+            // We are visiting a node we have previously visited
+            // at any point. If it is on the list of nodes that
+            // got to here, we have a cycle
+            for(int n=0; n<names.size()-1; n++) {
+                if(names.get(n).equals(node.filename)) {
+                    return true;
+                }
             }
 
+            // If we hit a node that has been previously
+            // visited, but is not part of a cycle,
+            // there there is no cycle along this path
+            names.remove(names.size()-1);
+            return false;
         }
 
         node.visit = visit;
