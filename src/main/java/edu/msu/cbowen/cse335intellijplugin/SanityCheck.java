@@ -42,6 +42,14 @@ public class SanityCheck {
     /// Quoted includes in tests
     private final Pattern quotedIncludes;
 
+    public boolean isHasPch() {
+        return hasPch;
+    }
+
+    public void setHasPch(boolean hasPch) {
+        this.hasPch = hasPch;
+    }
+
     /// Does this project has a pch.h file?
     private boolean hasPch = false;
 
@@ -54,10 +62,10 @@ public class SanityCheck {
 
     public SanityCheck() {
         usingNamespacePattern = Pattern.compile("using\\s+namespace");
-        authorPattern = Pattern.compile("@author\\s+[a-zA-Z]");
-        pchPattern = Pattern.compile("#include\\s+\"pch.h\"");
-        pchPatternTest = Pattern.compile("#include\\s+<pch.h>");
-        quotedIncludes = Pattern.compile("#include\\s\"");
+        authorPattern = Pattern.compile("@author\\s*[a-zA-Z]");
+        pchPattern = Pattern.compile("#include\\s*\"pch.h\"");
+        pchPatternTest = Pattern.compile("#include\\s*<pch.h>");
+        quotedIncludes = Pattern.compile("#include\\s*\"");
     }
 
     public void setWindow(SanityWindow window) {
@@ -152,6 +160,24 @@ public class SanityCheck {
         var parent = wholePath.subpath(wholePath.getNameCount()-2, wholePath.getNameCount()-1);
         boolean isTest = parent.toString().equals("Tests") || parent.toString().equals("Test");
 
+        // Get the document from CLion/Jetbrains
+        Document document = FileDocumentManager.getInstance().getDocument(file);
+        if(document == null) {
+            return;
+        }
+        CharSequence charSequence = document.getImmutableCharSequence();
+        String content = charSequence.toString();
+
+        // And check the contents
+        checkFileContent(file, path, content, isTest);
+    }
+
+    public void checkFileContent(VirtualFile file, String path, String content, boolean isTest) {
+        Path wholePath = Paths.get(path);
+        Path filename = wholePath.getFileName();
+
+        String[] lines = content.split("\\r?\\n");
+
         boolean isH = path.endsWith(".h");
         boolean isCPP = path.endsWith(".cpp");
         boolean isSource = isH || isCPP;
@@ -161,13 +187,6 @@ public class SanityCheck {
 
         authorExists = false;
         pchExists = false;
-
-        Document document = FileDocumentManager.getInstance().getDocument(file);
-        if(document == null) {
-            return;
-        }
-        CharSequence charSequence = document.getImmutableCharSequence();
-        String[] lines = charSequence.toString().split("\\r?\\n");
 
         includeCycleCheck.file(file, path, lines);
 
@@ -190,7 +209,6 @@ public class SanityCheck {
                 error(file, path, 0, Errors.MissingPCH);
             }
         }
-
     }
 
     private void checkLine(VirtualFile file, String path, int lineNumber, String line, boolean isTest) {
@@ -238,7 +256,7 @@ public class SanityCheck {
         return m.find();
     }
 
-    private void error(VirtualFile file, String path, int line, String message) {
+    protected void error(VirtualFile file, String path, int line, String message) {
         window.error(project, file, path, line, message, jbErrorColor);
         errorCnt++;
     }
