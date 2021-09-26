@@ -22,7 +22,6 @@
         <toolWindow id="Sanity" secondary="true" icon="AllIcons.General.Modified" anchor="bottom"
                     factoryClass="edu.msu.cbowen.cse335intellijplugin.SanityWindowFactory"/>
 
-
     </extensions>
 
     <actions>
