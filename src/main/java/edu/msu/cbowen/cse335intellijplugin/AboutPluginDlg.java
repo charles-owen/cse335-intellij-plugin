@@ -49,7 +49,7 @@ public class AboutPluginDlg extends DialogWrapper {
      *
      * @return dialog actions
      */
-    protected Action @NotNull [] createActions() {
+    protected Action [] createActions() {
         return new Action[]{getOKAction()};
     }
 

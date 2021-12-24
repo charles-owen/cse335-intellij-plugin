@@ -77,7 +77,7 @@ public class OpenSubmissionsDlg extends DialogWrapper {
      *
      * @return dialog actions
      */
-    protected Action @NotNull [] createActions() {
+    protected Action [] createActions() {
         return new Action[]{getCancelAction()};
     }
 }

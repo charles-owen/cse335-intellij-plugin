@@ -1,1 +1,1 @@
-rootProject.name = "cse335-intellij-plugin"
+rootProject.name = "CSE335 CLion Plugin"

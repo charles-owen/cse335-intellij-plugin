@@ -3,6 +3,7 @@
 # cse335-intellij-plugin Changelog
 
 ## [Unreleased]
+Updating to CLion 2021.3.1
 
 ## [0.4.2]
 - Fixed problems with paths when exporting on a Windows system
