@@ -73,7 +73,7 @@ public class DirectoryToZip {
                 .forEach(path -> {
                     if(!toExclude(path.toString())) {
 
-                        System.out.println(path);
+                        // System.out.println(path);
 
                         String relativePath = pp.relativize(path).toString();
                         if(File.separatorChar != '/') {

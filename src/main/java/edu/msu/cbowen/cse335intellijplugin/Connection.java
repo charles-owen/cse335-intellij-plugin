@@ -49,6 +49,7 @@ public class Connection {
     public static final String SUBMIT_PATH = "/cl/api/course/submission/submit/";
     public static final String TEAM_SUBMIT_PATH = "/cl/api/team/submission/submit/";
     private static final String POLL_PATH = "/cl/api/poll";
+    private static final String IDE_PATH = "/software/clion/ide";
 
     /// Error messages
     private String error = null;
@@ -249,6 +250,62 @@ public class Connection {
         return setState(States.CONNECTED);
     }
 
+    public static class IDE {
+        public IDE(APIValue data) {
+            version = data.getAsString("version");
+        }
+
+        private String version;
+
+        String getVersion() {return version;}
+    }
+
+    public IDE queryIDE() {
+        String response;
+
+        String https_url = getServer() + IDE_PATH;
+        URL url;
+        try {
+            url = new URL(https_url);
+            HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+
+            int responseCode=conn.getResponseCode();
+
+            response = "";
+            if (responseCode == HttpsURLConnection.HTTP_OK) {
+                String line;
+                try(BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                    while ((line=br.readLine()) != null) {
+                        response+=line;
+                    }
+                }
+            } else {
+                throw new IOException("Invalid server response code " + responseCode);
+            }
+        } catch (MalformedURLException e) {
+            return null;
+        } catch(UnknownHostException ex) {
+            error = "Unable to communicate with course server " + ex.getLocalizedMessage();
+            return null;
+        } catch(IOException ex) {
+            error = "I/O exception: " + ex.getLocalizedMessage();
+            return null;
+        }
+
+        APIResponse json = new APIResponse(response);
+        if (json.hasError()) {
+            // Failed
+            error = json.getErrorTitle();
+            return null;
+        }
+
+        var data = json.getData("ide");
+        return new IDE(data.get("attributes"));
+    }
+
     /**
      * Nested PostData class
      */
@@ -332,7 +389,7 @@ public class Connection {
         }
 
         if(state != States.CONNECTED && this.state == States.CONNECTED) {
-            // Just just became disconnected
+            // Just became disconnected
             keepAwakeThread.stop();
             keepAwakeThread = null;
         }

@@ -137,6 +137,20 @@ public class SanityCheck {
 
     }
 
+    /**
+     * Information about a file we are analyzing.
+     */
+    public static class FileInfo {
+        /// Is this a test?
+        public boolean isTest = false;
+
+        /// How many header files included in this header?
+        public int headerCount = 0;
+
+        /// Class name for a .cpp or .h file
+        private String className;
+    }
+
     private void checkFile(VirtualFile file, String path) {
         Path wholePath = Paths.get(path);
         Path filename = wholePath.getFileName();
@@ -156,54 +170,71 @@ public class SanityCheck {
             return;
         }
 
+        var info = new FileInfo();
+
         // Is this in a test?
         var parent = wholePath.subpath(wholePath.getNameCount()-2, wholePath.getNameCount()-1);
-        boolean isTest = parent.toString().equals("Tests") || parent.toString().equals("Test");
+        info.isTest = parent.toString().equals("Tests") || parent.toString().equals("Test");
 
         // Get the document from CLion/Jetbrains
         Document document = FileDocumentManager.getInstance().getDocument(file);
         if(document == null) {
             return;
         }
+
         CharSequence charSequence = document.getImmutableCharSequence();
         String content = charSequence.toString();
 
+
         // And check the contents
-        checkFileContent(file, path, content, isTest);
+        checkFileContent(file, path, content, info);
     }
 
-    public void checkFileContent(VirtualFile file, String path, String content, boolean isTest) {
+    public void checkFileContent(VirtualFile file, String path, String content, FileInfo info) {
         Path wholePath = Paths.get(path);
         Path filename = wholePath.getFileName();
-
-        String[] lines = content.split("\\r?\\n");
 
         boolean isH = path.endsWith(".h");
         boolean isCPP = path.endsWith(".cpp");
         boolean isSource = isH || isCPP;
 
+        //
+        // Determine a class name
+        // Only valid for .h and .cpp files
+        //
+        String fns = filename.toString();
+        if(isH) {
+            info.className = fns.substring(0, fns.length() - 2);
+        } else if(isCPP) {
+            info.className = fns.substring(0, fns.length() - 4);
+        } else {
+            info.className = "";
+        }
+
         filePattern = Pattern.compile("@file\\s+" + filename);
         fileExists = false;
 
-        authorExists = false;
         pchExists = false;
+        authorExists = false;
+
+        String[] lines = content.split("\\r?\\n");
 
         includeCycleCheck.file(file, path, lines);
 
         for(int i=0; i<lines.length; i++) {
-            checkLine(file, path, i+1, lines[i], isTest);
+            checkLine(file, path, i+1, lines[i], info);
         }
 
-        if(!isTest && isSource && !authorExists) {
+        if(!info.isTest && isSource && !authorExists) {
             error(file, path, 0, Errors.MissingAuthor);
         }
 
-        if(!isTest && isSource && !fileExists) {
+        if(!info.isTest && isSource && !fileExists) {
             error(file, path, 0, Errors.MissingFile);
         }
 
         if(hasPch && isCPP && !pchExists) {
-            if(isTest) {
+            if(info.isTest) {
                 error(file, path, 0, Errors.MissingPCHTest);
             } else {
                 error(file, path, 0, Errors.MissingPCH);
@@ -211,13 +242,21 @@ public class SanityCheck {
         }
     }
 
-    private void checkLine(VirtualFile file, String path, int lineNumber, String line, boolean isTest) {
+    private void checkLine(VirtualFile file, String path, int lineNumber, String line, FileInfo info) {
         boolean isH = path.endsWith(".h");
         boolean isCPP = path.endsWith(".cpp");
 
         if(isH) {
             if(test(usingNamespacePattern, line)) {
                 error(file, path, lineNumber, Errors.UsingNamespace);
+            }
+
+            var qualifierPattern = Pattern.compile(info.className + "\\s*\\:\\:");
+            var qm = qualifierPattern.matcher(line);
+            if(qm.find() && !line.contains("inline"))
+            {
+                var found = qm.group();
+                error(file, path, lineNumber, Errors.ExtraQualifier);
             }
         }
 
@@ -229,26 +268,47 @@ public class SanityCheck {
             fileExists = true;
         }
 
-        if(isCPP) {
-            if(isTest) {
-                // Test-specific .cpp files
-                if(test(pchPatternTest, line)) {
-                    pchExists = true;
+
+
+        //
+        // Find all headers in the line (could be more than one)
+        //
+        var pattern = Pattern.compile("(#\\s*include\\s*\\\"[^\\\"<\\n]*\\\")|(#\\s*include\\s*<[^\\\"<\\n]*>)");
+        var m = pattern.matcher(line);
+
+        while(m.find()) {
+            var header = m.group();
+
+            info.headerCount++;
+            var libraryHeader = header.contains("<");
+
+            if(header.contains("pch.h")) {
+                // This is an include of pch.h
+                pchExists = true;
+                if(isH) {
+                    // pch.h should not be included in a header
+                    error(file, path, lineNumber, Errors.PCHIncludedInHeader);
                 }
 
-                // Test for quoted includes
-                if(test(quotedIncludes, line)) {
-                    if(!line.contains("gtest/")) {
-                        error(file, path, lineNumber, Errors.QuotedIncludesTest);
-                    }
-                }
-            } else {
-                if(test(pchPattern, line)) {
-                    pchExists = true;
+                if(info.headerCount != 1) {
+                    // pch.h must be included first
+                    error(file, path, lineNumber, Errors.PCHNotFirst);
                 }
             }
 
+            if(isCPP) {
+                if(info.isTest) {
+                    if(!libraryHeader) {
+                        if(!line.contains("gtest/") || !line.contains("help")) {
+                            error(file, path, lineNumber, Errors.QuotedIncludesTest);
+                        }
+                    }
+                }
+            }
+
+
         }
+
     }
 
     private boolean test(Pattern pattern, String line) {

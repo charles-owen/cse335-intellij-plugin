@@ -23,14 +23,14 @@ class DirectoryToZipTest {
         File file = new File(path);
         String examplePath = file.getAbsolutePath();
 
-        System.out.println(examplePath);
+       // System.out.println(examplePath);
 
         //
         // Create a temporary output file
         //
         file = File.createTempFile("temp", ".zip");
         String resultPath = file.getAbsolutePath();
-        System.out.println(resultPath);
+      //  System.out.println(resultPath);
 
         OutputStream stream = Files.newOutputStream(file.toPath());
 

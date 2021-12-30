@@ -78,6 +78,7 @@ public class LoginAction extends AnAction {
 
             case CONNECTED:
                 // We are connected, so we are done!
+                onConnected(connection);
                 return;
         }
 
@@ -97,9 +98,17 @@ public class LoginAction extends AnAction {
                     "Unable to log in", null);
         }
 
+        onConnected(connection);
+    }
+
+    private void onConnected(@NotNull Connection connection) {
+
         //
         // And we are connected!
         //
+
+        var ide = connection.queryIDE();
+        int x = 7;
     }
 
     /**
