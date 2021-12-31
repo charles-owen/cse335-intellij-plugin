@@ -299,7 +299,7 @@ public class SanityCheck {
             if(isCPP) {
                 if(info.isTest) {
                     if(!libraryHeader) {
-                        if(!line.contains("gtest/") || !line.contains("help")) {
+                        if(!line.contains("gtest/") && !line.contains("help")) {
                             error(file, path, lineNumber, Errors.QuotedIncludesTest);
                         }
                     }
