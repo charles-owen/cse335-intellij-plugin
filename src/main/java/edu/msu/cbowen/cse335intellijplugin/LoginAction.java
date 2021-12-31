@@ -1,8 +1,10 @@
 package edu.msu.cbowen.cse335intellijplugin;
 
+import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
+import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
@@ -101,6 +103,10 @@ public class LoginAction extends AnAction {
         onConnected(connection);
     }
 
+    /**
+     * Handle a new connection, check the IDE plugin version we expect
+     * @param connection Connection to the server
+     */
     private void onConnected(@NotNull Connection connection) {
 
         //
@@ -108,7 +114,19 @@ public class LoginAction extends AnAction {
         //
 
         var ide = connection.queryIDE();
-        int x = 7;
+        String version = PluginManagerCore.getPlugin(PluginId.getId("edu.msu.cbowen.cse335intellijplugin")).getVersion();
+        var expectedVersion = ide.getVersion();
+        if(version != null) {
+            if(!version.equals(expectedVersion)) {
+                Messages.showMessageDialog((Project)null,
+                        "Your CSE335 CLion Plugin needs to be updated. You are running version " + version +
+                        ". The required version is " + expectedVersion + ". To update the plugin, go to Settings/Preferences. " +
+                                "Choose Plugins on the left. " +
+                                "On the Plugins page, choose the Installed tab and update the CSE335 CLion Course Extensions " +
+                                "plugin to the latest version.",
+                        "Update Plugin", null);
+            }
+        }
     }
 
     /**
