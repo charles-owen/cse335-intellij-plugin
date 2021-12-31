@@ -3,6 +3,15 @@
     <name>CSE335 CLion Course Extensions</name>
     <vendor>Charles B. Owen</vendor>
     <version>0.0.0</version>
+    <change-notes>  <![CDATA[
+Updating to CLion 2021.3.1<br>
+Login now checks to ensure the version is up to date<br>
+Now ensures pch.h is the first header included<br>
+Allows for quoted headers in testing projects if in a directory with "help" in the name<br>
+Tests for incorrect membership in headers (Game::Game())<br>
+Changelog is not working, so manually added changes to plugin.xml
+          ]]>
+    </change-notes>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->

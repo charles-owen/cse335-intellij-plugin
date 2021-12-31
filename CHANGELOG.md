@@ -3,7 +3,14 @@
 # cse335-intellij-plugin Changelog
 
 ## [Unreleased]
+
+## [1.0.2]
 Updating to CLion 2021.3.1
+Login now checks to ensure the version is up to date
+Now ensures pch.h is the first header included
+Allows for quoted headers in testing projects if in a directory with "help" in the name
+Tests for incorrect membership in headers (Game::Game())
+Changelog is not working, so manually added changes to plugin.xml
 
 ## [0.4.2]
 - Fixed problems with paths when exporting on a Windows system

@@ -47,9 +47,9 @@ intellij {
 // Configure gradle-changelog-plugin plugin.
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
-//    version = properties("pluginVersion")
+    //version = properties("pluginVersion")
     path.set("${project.projectDir}/CHANGELOG.md")
-//    groups = emptyList()
+    //groups = emptyList()
     keepUnreleasedSection.set(true)
     unreleasedTerm.set("[Unreleased]")
 }
