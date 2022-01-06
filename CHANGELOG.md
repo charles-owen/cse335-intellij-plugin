@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+## [1.0.3]
+Added individualized plugin code
+
 ## [1.0.2]
 Updating to CLion 2021.3.1
 Login now checks to ensure the version is up to date

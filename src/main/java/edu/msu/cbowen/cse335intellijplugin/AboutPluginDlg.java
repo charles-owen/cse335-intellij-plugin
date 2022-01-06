@@ -3,7 +3,9 @@ package edu.msu.cbowen.cse335intellijplugin;
 import com.intellij.ide.plugins.PluginManager;
 import com.intellij.ide.plugins.PluginManagerCore;
 import com.intellij.openapi.extensions.PluginId;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,6 +22,7 @@ public class AboutPluginDlg extends DialogWrapper {
     private JPanel panel;
     private JLabel image;
     private JLabel version;
+    private JLabel hash;
 
     public AboutPluginDlg() {
         super(true);
@@ -35,6 +38,31 @@ public class AboutPluginDlg extends DialogWrapper {
             version.setText("Version " + ver);
         }
 
+        Connection connection = Connection.getInstance();
+        if(connection.getState() == Connection.States.DISCONNECTED)
+        {
+            hash.setText("Plugin code is not available if not logged in.");
+            return panel;
+        }
+
+        //
+        // Get the user Id for the output file
+        //
+        AppSettingsState settings = AppSettingsState.getInstance();
+        if(settings == null) {
+            hash.setText("Unable to get application settings.");
+            return panel;
+        }
+
+        String userId = settings.userId;
+        if(userId.equals("")) {
+            hash.setText("User ID has not been set in settings/preferences.");
+            return panel;
+        }
+
+        var toHash = userId + "-" + ver;
+        var hashed = Hasher.hash(toHash);
+        hash.setText("Plugin Code: " + hashed);
         return panel;
     }
 
