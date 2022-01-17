@@ -15,5 +15,8 @@ public class HasherTest {
 
         hash = Hasher.hash("cbowen-1.0.3");
         assertEquals(674232713, hash);
+
+        hash = Hasher.hash("sunkarav-1.0.3");
+        assertEquals(357688387, hash);
     }
 }

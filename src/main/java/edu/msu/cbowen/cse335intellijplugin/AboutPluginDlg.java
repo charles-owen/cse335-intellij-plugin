@@ -54,7 +54,7 @@ public class AboutPluginDlg extends DialogWrapper {
             return panel;
         }
 
-        String userId = settings.userId;
+        String userId = settings.userId.toLowerCase().trim();
         if(userId.equals("")) {
             hash.setText("User ID has not been set in settings/preferences.");
             return panel;
