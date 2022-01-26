@@ -91,7 +91,9 @@ public class SanityWindow {
     }
 
     public void show() {
-        toolWindow.show();
+        if(toolWindow != null) {
+            toolWindow.show();
+        }
     }
 
     public void clear() {
