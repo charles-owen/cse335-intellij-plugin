@@ -49,7 +49,7 @@ public class Connection {
     public static final String SUBMIT_PATH = "/cl/api/course/submission/submit/";
     public static final String TEAM_SUBMIT_PATH = "/cl/api/team/submission/submit/";
     private static final String POLL_PATH = "/cl/api/poll";
-    private static final String IDE_PATH = "/software/clion/ide";
+    private static final String IDE_PATH = "/software/clion/ide/";
 
     /// Error messages
     private String error = null;

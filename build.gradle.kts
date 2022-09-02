@@ -8,10 +8,10 @@ plugins {
     // Java support
     id("java")
     // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.6.0"
-    // gradle-intellij-plugin - read more: https://github.com/JetBrains/gradle-intellij-plugin
-    id("org.jetbrains.intellij") version "1.3.0"
-    // gradle-changelog-plugin - read more: https://github.com/JetBrains/gradle-changelog-plugin
+    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+    // Gradle IntelliJ Plugin
+    id("org.jetbrains.intellij") version "1.9.0"
+    // Gradle Changelog Plugin
     id("org.jetbrains.changelog") version "1.3.1"
     // Gradle Qodana Plugin
     id("org.jetbrains.qodana") version "0.1.13"
@@ -48,6 +48,9 @@ intellij {
 // Read more: https://github.com/JetBrains/gradle-changelog-plugin
 changelog {
     //version = properties("pluginVersion")
+    version.set(properties("pluginVersion"))
+    groups.set(emptyList())
+
     path.set("${project.projectDir}/CHANGELOG.md")
     //groups = emptyList()
     keepUnreleasedSection.set(true)
@@ -57,11 +60,11 @@ changelog {
 tasks {
     // Set the compatibility versions to 11
     withType<JavaCompile> {
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "11"
+        kotlinOptions.jvmTarget = "17"
     }
 
     patchPluginXml {
