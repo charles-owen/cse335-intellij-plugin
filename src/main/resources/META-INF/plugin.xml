@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>edu.msu.cbowen.cse335intellijplugin</id>
-    <name>CSE335 CLion Course Extensions</name>
+    <name>CSE335 Course Extensions</name>
     <vendor>Charles B. Owen</vendor>
 
     <!-- Product and plugin compatibility requirements -->

@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+## [1.0.6]
+- Renamed plugin to remove offending trademark usage
+
 ## [1.0.5]
 - Updating to CLion 2022.2
 - Fixed bug when connecting to /ide/ on server

@@ -1,1 +1,1 @@
-rootProject.name = "CSE335 CLion Plugin"
+rootProject.name = "CSE335 Plugin"

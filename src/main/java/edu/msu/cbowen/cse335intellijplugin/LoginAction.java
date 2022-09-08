@@ -119,11 +119,11 @@ public class LoginAction extends AnAction {
         if(version != null) {
             if(!version.equals(expectedVersion)) {
                 Messages.showMessageDialog((Project)null,
-                        "Your CSE335 CLion Plugin needs to be updated. You are running version " + version +
+                        "Your CSE335 Course Extensions Plugin needs to be updated. You are running version " + version +
                         ". The required version is " + expectedVersion + ". To update the plugin, go to Settings/Preferences. " +
                                 "Choose Plugins on the left. " +
-                                "On the Plugins page, choose the Installed tab and update the CSE335 CLion Course Extensions " +
-                                "plugin to the latest version.",
+                                "On the Plugins page, choose the Installed tab and update the CSE335 Course Extensions " +
+                                "Plugin to the latest version.",
                         "Update Plugin", null);
             }
         }
