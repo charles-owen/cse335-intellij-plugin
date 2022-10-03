@@ -27,8 +27,12 @@ repositories {
 
 dependencies {
     implementation("com.googlecode.json-simple:json-simple:1.1.1")
-    testImplementation(platform("org.junit:junit-bom:5.7.2"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation(platform("org.junit:junit-bom:5.9.1"))
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+        because("Only needed to run tests in a version of IntelliJ IDEA that bundles older versions")
+    }
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine")
 }
 
 // Configure gradle-intellij-plugin plugin.

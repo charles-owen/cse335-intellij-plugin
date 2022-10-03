@@ -4,15 +4,19 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ContentIterator;
+import com.intellij.openapi.roots.ProjectFileIndex;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.JBColor;
 import com.intellij.util.ui.JBUI;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,7 +101,25 @@ public class SanityCheck {
         //
         // Get all source files
         //
-        VirtualFile[] vFiles = ProjectRootManager.getInstance(project).getContentSourceRoots();
+        ArrayList<VirtualFile> vFiles = new ArrayList<VirtualFile>();
+        ProjectFileIndex.getInstance(project).iterateContent(
+                new ContentIterator() {
+                    @Override
+                    public boolean processFile(@NotNull VirtualFile file) {
+                        String filePath = file.getPath();
+                        if(filePath.contains("cmake-build")) {
+                            return true;
+                        }
+
+                        vFiles.add(file);
+                        return true;
+                    }
+                }
+        );
+
+        //
+        // Determine if there is a pch.h file
+        //
         for(VirtualFile file : vFiles) {
             String filePath = file.getPath();
 
@@ -107,6 +129,9 @@ public class SanityCheck {
             }
         }
 
+        //
+        // Check all files
+        //
         for(VirtualFile file : vFiles) {
             String filePath = file.getPath();
 

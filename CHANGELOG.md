@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+## [1.0.7]
+- Fixed issues of sanity check scanning cmake-build directories
+
 ## [1.0.6]
 - Renamed plugin to remove offending trademark usage
 
