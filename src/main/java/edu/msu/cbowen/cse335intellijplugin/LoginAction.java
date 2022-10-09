@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -117,7 +118,10 @@ public class LoginAction extends AnAction {
         String version = PluginManagerCore.getPlugin(PluginId.getId("edu.msu.cbowen.cse335intellijplugin")).getVersion();
         var expectedVersion = ide.getVersion();
         if(version != null) {
-            if(!version.equals(expectedVersion)) {
+            ComparableVersion version1 = new ComparableVersion(version);
+            ComparableVersion expectedVersion1 = new ComparableVersion(expectedVersion);
+            if(version1.compareTo(expectedVersion1) < 0) {
+//            if(!version.equals(expectedVersion)) {
                 Messages.showMessageDialog((Project)null,
                         "Your CSE335 Course Extensions Plugin needs to be updated. You are running version " + version +
                         ". The required version is " + expectedVersion + ". To update the plugin, go to Settings/Preferences. " +

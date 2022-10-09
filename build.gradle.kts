@@ -62,7 +62,7 @@ changelog {
 }
 
 tasks {
-    // Set the compatibility versions to 11
+    // Set the compatibility versions to 17
     withType<JavaCompile> {
         sourceCompatibility = "17"
         targetCompatibility = "17"

@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## [1.0.9]
+- Version number checking improved
+
+## [1.0.8]
+- Changed Java build to fix getFont issue
+
 ## [1.0.7]
 - Fixed issues of sanity check scanning cmake-build directories
 
