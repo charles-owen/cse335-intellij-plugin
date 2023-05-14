@@ -111,6 +111,10 @@ public class SanityCheck {
                             return true;
                         }
 
+                        if(filePath.contains(".idea")) {
+                            return true;
+                        }
+
                         vFiles.add(file);
                         return true;
                     }
