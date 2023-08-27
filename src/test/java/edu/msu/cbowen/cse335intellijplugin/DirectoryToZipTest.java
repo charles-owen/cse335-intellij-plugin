@@ -1,6 +1,4 @@
 package edu.msu.cbowen.cse335intellijplugin;
-
-import com.twelvemonkeys.imageio.metadata.Directory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -1,20 +1,31 @@
 import org.jetbrains.changelog.markdownToHTML
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jetbrains.changelog.date
+import org.jetbrains.changelog.Changelog
 
 fun properties(key: String) = project.findProperty(key).toString()
+fun environment(key: String) = providers.environmentVariable(key)
+
+//plugins {
+//    // Java support
+//    id("java")
+//    // Kotlin support
+//    id("org.jetbrains.kotlin.jvm") version "1.7.10"
+//    // Gradle IntelliJ Plugin
+//    id("org.jetbrains.intellij") version "1.10.0"
+//    // Gradle Changelog Plugin
+//    id("org.jetbrains.changelog") version "1.3.1"
+//    // Gradle Qodana Plugin
+//    id("org.jetbrains.qodana") version "0.1.13"
+//}
 
 plugins {
-    // Java support
-    id("java")
-    // Kotlin support
-    id("org.jetbrains.kotlin.jvm") version "1.7.10"
-    // Gradle IntelliJ Plugin
-    id("org.jetbrains.intellij") version "1.9.0"
-    // Gradle Changelog Plugin
-    id("org.jetbrains.changelog") version "1.3.1"
-    // Gradle Qodana Plugin
-    id("org.jetbrains.qodana") version "0.1.13"
+    id("java") // Java support
+    alias(libs.plugins.kotlin) // Kotlin support
+    alias(libs.plugins.gradleIntelliJPlugin) // Gradle IntelliJ Plugin
+    alias(libs.plugins.changelog) // Gradle Changelog Plugin
+    alias(libs.plugins.qodana) // Gradle Qodana Plugin
+    alias(libs.plugins.kover) // Gradle Kover Plugin
 }
 
 group = properties("pluginGroup")

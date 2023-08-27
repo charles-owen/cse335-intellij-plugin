@@ -7,7 +7,7 @@ import com.intellij.openapi.actionSystem.Presentation;
 import com.intellij.openapi.extensions.PluginId;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import org.apache.maven.artifact.versioning.ComparableVersion;
+//import org.apache.maven.artifact.versioning.ComparableVersion;
 import org.jetbrains.annotations.NotNull;
 
 /**
