@@ -3,6 +3,7 @@
 # cse335-intellij-plugin Changelog
 
 ## [Unreleased]
+- Updated for Intellij 2023 versions
 
 ## [1.0.9]
 - Version number checking improved
