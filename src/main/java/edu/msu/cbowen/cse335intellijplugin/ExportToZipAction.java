@@ -33,10 +33,6 @@ public class ExportToZipAction extends ExportOrSubmitAction {
         //
         // File save dialog box
         //
-//        FileChooserDescriptor fcd = FileChooserDescriptorFactory.createSingleFileDescriptor(".zip");
-//        fcd.setTitle("Output Zip File");
-//        fcd.setDescription("Select output Zip file to save project to.");
-
         String[] extensions = new String[]{"zip"} ;
         FileSaverDescriptor fsd = new FileSaverDescriptor("Save .zip file",
                 "Select output Zip file to save project to.", extensions);

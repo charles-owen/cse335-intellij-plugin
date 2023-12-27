@@ -37,6 +37,7 @@ public class DirectoryToZip {
         exclude("[\\\\/](html|latex|rtf)[\\\\/]");
         exclude("[\\\\/]cmake-");
         exclude("(\\.zip$)|(\\.zip[\\\\/])");
+        exclude("(\\.exe)|(\\.app)");
         exclude("\\.(o|O)$");
     }
 

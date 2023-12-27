@@ -115,6 +115,11 @@ public class SanityCheck {
                             return true;
                         }
 
+
+                        if(filePath.contains("_MACOSX")) {
+                            return true;
+                        }
+
                         vFiles.add(file);
                         return true;
                     }
