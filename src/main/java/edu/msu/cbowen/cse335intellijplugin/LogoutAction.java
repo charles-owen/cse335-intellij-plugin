@@ -1,5 +1,6 @@
 package edu.msu.cbowen.cse335intellijplugin;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
@@ -25,4 +26,8 @@ public class LogoutAction extends AnAction {
         presentation.setEnabledAndVisible(connection.getState() != Connection.States.DISCONNECTED);
     }
 
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
 }

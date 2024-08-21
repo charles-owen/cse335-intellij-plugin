@@ -1,6 +1,7 @@
 package edu.msu.cbowen.cse335intellijplugin;
 
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.fileChooser.*;
 import com.intellij.openapi.project.Project;
@@ -68,4 +69,8 @@ public class ExportToZipAction extends ExportOrSubmitAction {
         e.getPresentation().setEnabledAndVisible(project != null);
     }
 
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
 }

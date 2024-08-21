@@ -1,5 +1,6 @@
 package edu.msu.cbowen.cse335intellijplugin;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -14,7 +15,7 @@ import javax.swing.*;
 /**
  * Action class to demonstrate how to interact with the IntelliJ Platform.
  * The only action this class performs is to provide the user with a popup dialog as feedback.
- * Typically this class is instantiated by the IntelliJ Platform framework based on declarations
+ * Normally this class is instantiated by the IntelliJ Platform framework based on declarations
  * in the plugin.xml file. But when added at runtime this class is instantiated by an action group.
  */
 public class PopupDialogAction extends AnAction {
@@ -76,4 +77,8 @@ public class PopupDialogAction extends AnAction {
         e.getPresentation().setEnabledAndVisible(true);
     }
 
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
+    }
 }

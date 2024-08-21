@@ -2,6 +2,7 @@
     <id>edu.msu.cbowen.cse335intellijplugin</id>
     <name>CSE335 Course Extensions</name>
     <vendor>Charles B. Owen</vendor>
+    <depends>com.intellij.clion</depends>
 
     <!-- Product and plugin compatibility requirements -->
     <!-- https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->

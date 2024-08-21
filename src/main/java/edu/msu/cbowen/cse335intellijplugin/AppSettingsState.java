@@ -30,7 +30,7 @@ public class AppSettingsState implements PersistentStateComponent<AppSettingsSta
     public String userId = "";
 
     /// The remote server
-    public String server = "https://facweb.cse.msu.edu/cbowen/cse335";
+    public String server = "https://cse335.egr.msu.edu";
 
     public static AppSettingsState getInstance() {
         return ApplicationManager.getApplication().getService(AppSettingsState.class);

@@ -1,6 +1,7 @@
 package edu.msu.cbowen.cse335intellijplugin;
 
 import com.intellij.ide.plugins.PluginManagerCore;
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.Presentation;
@@ -32,7 +33,7 @@ public class LoginAction extends AnAction {
 
         String userId = settings.userId;
         if(userId.equals("")) {
-            Messages.showMessageDialog((Project)null, "User ID has not been set. Please go to the settings/preferences for the CSE335 plugin to set.",
+            Messages.showMessageDialog((Project)null, "User ID has not been set. Please go to Settings/Preferences to set up the CSE335 plugin. Look under Tools/CSE 335 Plugin Settings.",
                     "User ID not set", null);
 
             return;
@@ -144,5 +145,10 @@ public class LoginAction extends AnAction {
 
         Presentation presentation = e.getPresentation();
         presentation.setEnabledAndVisible(connection.getState() == Connection.States.DISCONNECTED);
+    }
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.BGT;
     }
 }

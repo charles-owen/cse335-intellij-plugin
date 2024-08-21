@@ -16,6 +16,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.net.UnknownHostException;
@@ -266,7 +267,8 @@ public class Connection {
         String https_url = getServer() + IDE_PATH;
         URL url;
         try {
-            url = new URL(https_url);
+            // url = new URL(https_url);
+            url = URI.create(https_url).toURL();
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
@@ -411,7 +413,10 @@ public class Connection {
         String https_url = getServer() + path;
         URL url;
         try {
-            url = new URL(https_url);
+            //url = new URL(https_url);
+            url = URI.create(https_url).toURL();
+
+
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoInput(true);

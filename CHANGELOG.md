@@ -4,6 +4,12 @@
 
 ## [Unreleased]
 
+## 1.0.15 - 2024-08-21
+- Got rid of deprecated URL String constructor usage
+
+## 1.0.13 - 2024-08-21
+- Moved to new server location
+
 ## 1.0.12 - 2023-12-27
 - Updated for Intellij 2023 versions
 - Now ignores _MACOSX directores

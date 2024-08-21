@@ -56,7 +56,7 @@ public class AboutPluginDlg extends DialogWrapper {
 
         String userId = settings.userId.toLowerCase().trim();
         if(userId.equals("")) {
-            hash.setText("User ID has not been set in settings/preferences.");
+            hash.setText("User ID has not been set in settings/preferences. Look under Tools/CSE 335 Plugin Settings.");
             return panel;
         }
 
